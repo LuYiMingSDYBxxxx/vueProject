@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			#banner{width:900px;height:600px;margin:20px auto;}
+			.banner_warp{height:600px;/*transition:2s;*//*transform:rotateX(0deg)*/}
+			.banner_warp .img_wrap{position:relative;transform-style:preserve-3d;transition:2s;/*animation:anim 20s ease infinite;*//*perspective:1100PX;*/}
+			.banner_warp .img_box{position:absolute;}
+
+
+			
+			.left{float:left;}
+			@-webkit-keyframes anim{
+				from{transform:rotateX(360deg);}
+				to{transform:rotateX(0deg);}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="banner">
+			<div class="banner_warp">
+				
+			</div>
+			<div style="margin-top:200px;">
+				<button class="left" onclick="leftClick()"><</button>
+				<button style="float:right;" onclick="rigClick()">></button>
+			</div>
+			
+		</div>
+		<script type="text/javascript">
+			//var wrap = document.getElementsByClassName('img_box')
+			var box = document.getElementsByClassName('banner_warp')[0];
+			var animArr = document.getElementsByClassName('img_wrap')
+			var index = 0;
+			var flag = true;
+			function create(n,w){
+				for(var i=0;i<n;i++){
+					var img_wrap = document.createElement('div')
+					img_wrap.className = 'left img_wrap';
+					img_wrap.style.width = w/n+'px';
+					img_wrap.style.height = 600+'px';
+					box.appendChild(img_wrap)
+					for(var j=0;j<4;j++){
+						var img_box = document.createElement('div');
+						img_box.className = 'img_box';
+						img_box.style.width = w/n+'px';
+						img_box.style.height = 600+'px';
+						img_box.innerHTML = j
+						img_box.style.background = 'url(img/img'+(j+1)+'.jpg) no-repeat '+10*i+'% 0%'
+						img_box.style.backgroundSize = w+'px 600px'
+						if(j == 0){img_box.style.transform = 'translateZ(300px)'}
+						else if(j == 1){img_box.style.transform = 'translateZ(-300px) rotateX(180deg)'}
+						else if(j == 2){img_box.style.transform = 'translateY(-300px) rotateX(90deg)'}
+						else if(j == 3){img_box.style.transform = 'translateY(300px) rotateX(-90deg)'}
+						
+						img_wrap.appendChild(img_box)
+					}
+				}
+			}
+			create(10,900);
+			function anim(){
+				flag = false
+				//alert(1)
+				var a = 0;
+				for(var i = 0;i<animArr.length;i++){
+					setTimeout(function(){
+						animArr[a].style.transform = 'rotateX('+(90*index)+'deg)'
+						a++
+					},500*i)
+					
+				}
+				setTimeout(function(){flag = true},6500)
+			}
+			
+			function leftClick(){
+				if(flag){
+					index--;
+					anim()
+				}
+			}
+			function rigClick(){
+				if(flag){
+					index++;
+					anim()
+				}
+				
+			}
+			
+		setInterval(rigClick,animArr.length*750)
+		</script>
+	</body>
+</html>
